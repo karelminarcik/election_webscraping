@@ -19,7 +19,7 @@ Nasledne se Vam stahnou vysledky jako soubor s priponou .csv
 Vysledky hlasovani pro okres Olomouc:
 1. argument: `https://volby.cz/pls/ps2017nss/ps32?xjazyk=CZ&xkraj=12&xnumnuts=7102`
 jelikoz je ampersand reservovany znak
-![ampersand image](/img/ampersand.png)
+![ampersand image](https://github.com/karelminarcik/election_webscraping/tree/master/img/ampersand.png)
 musime url upravit : `https://volby.cz/pls/ps2017nss/ps32?xjazyk=CZ"&"xkraj=12"&"xnumnuts=7102`
 2. agrument: `volby_olomouc`
 
