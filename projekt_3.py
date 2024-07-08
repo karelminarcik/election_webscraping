@@ -15,6 +15,14 @@ discord: Karel Minarčík | karlos9957
 
 """
 def kraj_number(url_address):
+    """ Ziska cislo kraje, ktere se nachazi za 'kraj=' v url adrese.
+
+    Args:
+        url_address (_str_): url adresa okrsku
+
+    Returns:
+        str : vraci cislo kraje
+    """
     number = url_address[-16:-14]
     if "=" in number:
         number = number.replace("=", "")
@@ -24,6 +32,12 @@ def kraj_number(url_address):
         
 
 def scrap_the_web(url, file_name):
+    """_summary_
+
+    Args:
+        url (string): url adresa okrsku
+        file_name (string): nazev souboru, do ktereho se maji vysledna data ulozit(bez pripony)
+    """
     
     response = requests.get(url)
     web_html = response.text
@@ -107,16 +121,11 @@ def scrap_the_web(url, file_name):
 
     print(f"Data has been written to {excel_file_path}")
     print("The program is terminated")
-# Olomouc 
-# URL = "https://volby.cz/pls/ps2017nss/ps32?xjazyk=CZ&xkraj=12&xnumnuts=7102"    
-# Klatovy
-# URL = "https://volby.cz/pls/ps2017nss/ps32?xjazyk=CZ&xkraj=4&xnumnuts=3202"
-# Praha
-# URL = "https://volby.cz/pls/ps2017nss/ps32?xjazyk=CZ&xkraj=1&xnumnuts=1100"
+
 
 def main():
     if len(sys.argv) != 3:
-        print("Usage: python projekt_3.py <url> <file_name>")
+        print("Pouziti: python projekt_3.py <url> <nazev_souboru>")
         sys.exit(1)
 
     url = sys.argv[1]

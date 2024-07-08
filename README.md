@@ -1,8 +1,8 @@
-# Engeto_pa-3-projekt
+# Engeto_pa-3-projekt 💻
 Treti projekt na Python akademii od Engeta
 
 ## 1. Popis projektu
-Tento projekt slouzi k extrahovani vysledku voleb v roce 2017.
+Tento projekt slouzi k extrahovani vysledku voleb v Ceske Republice z roku 2017.
 Odkaz k prohlednuti najdete [zde](https://volby.cz/pls/ps2017nss/ps3?xjazyk=CZ).
 
 ## 2. Instalace knihoven
@@ -18,7 +18,7 @@ Nasledne se Vam stahnou vysledky jako soubor s priponou .csv
 ## 4. Ukazka projektu 
 Vysledky hlasovani pro okres Olomouc:
 1. argument: `https://volby.cz/pls/ps2017nss/ps32?xjazyk=CZ&xkraj=12&xnumnuts=7102`
-jelikoz je ampersand reservovany znak
+jelikoz je ampersand reservovany znak ❗
 ![ampersand image](https://github.com/karelminarcik/election_webscraping/blob/master/img/ampersand.PNG)
 musime url upravit : `https://volby.cz/pls/ps2017nss/ps32?xjazyk=CZ"&"xkraj=12"&"xnumnuts=7102`
 2. agrument: `volby_olomouc`
@@ -33,7 +33,7 @@ Data has been written to output.csv
 The program is terminated
 ```
 
-### Castecny vystup:
+### ✅ Castecny vystup:
 ```python
 ['500623', 'Bílá Lhota', '931', '568', '565', '31', '0', '0', '42', '0', '20', '73', '4', '6', '6', '0', '5', '53', '2', '12', '164', '0', '0', '62', '0', '0', '3', '1', '81', '0']
 ['552062', 'Bílsko', '172', '119', '119', '8', '0', '1', '11', '0', '7', '3', '1', '1', '0', '1', '0', '12', '0', '1', '27', '0', '0', '25', '0', '0', '1', '0', '20', '0']
