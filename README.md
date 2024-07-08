@@ -1,21 +1,21 @@
-# 1. Engeto_pa-3-projekt
+# Engeto_pa-3-projekt
 Treti projekt na Python akademii od Engeta
 
-## 2. Popis projektu
+## 1. Popis projektu
 Tento projekt slouzi k extrahovani vysledku voleb v roce 2017.
 Odkaz k prohlednuti najdete [zde](https://volby.cz/pls/ps2017nss/ps3?xjazyk=CZ).
 
-## 3. Instalace knihoven
+## 2. Instalace knihoven
 Knihovny, ktere jsou pouzity v kodu jsou ulozene v souboru `requirements.txt`. Pro instalaci doporucuji pouzit nove virtualni prostredi a s nainstalovanym managerem spustit nasledovne:
 - `pip --version`                      # overim verzi manageru
 - `pip install -r requirements.txt`    # nainstalujeme knihovny
 
-## 4. Spusteni projektu
+## 3. Spusteni projektu
 Spusteni souboru `project_3.py` v ramci prikazoveho radku pozaduje dva povinne argumenty.
 `python projekt_3.py <odkaz-uzemniho-celku>  <vysledny-soubor>`
 Nasledne se Vam stahnou vysledky jako soubor s priponou .csv
 
-## 5. Ukazka projektu 
+## 4. Ukazka projektu 
 Vysledky hlasovani pro okres Olomouc:
 1. argument: `https://volby.cz/pls/ps2017nss/ps32?xjazyk=CZ&xkraj=12&xnumnuts=7102`
 jelikoz je ampersand reservovany znak
