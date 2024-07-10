@@ -28,7 +28,8 @@ musime url upravit : `https://volby.cz/pls/ps2017nss/ps32?xjazyk=CZ"&"xkraj=12"&
 
 ### Prubeh stahovani:
 ```python
-Downloading data from inserted URL address:https://volby.cz/pls/ps2017nss/ps32?xjazyk=CZ&xkraj=12&xnumnuts=7102      
+Downloading data from inserted URL address:https://volby.cz/pls/ps2017nss/ps32?xjazyk=CZ&xkraj=12&xnumnuts=7102  
+Data was downloaded properly    
 Data has been written to output.csv
 The program is terminated
 ```
