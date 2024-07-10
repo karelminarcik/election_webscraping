@@ -14,8 +14,6 @@ email: k.minarcik@seznam.cz
 discord: Karel Minarčík | karlos9957
 
 """
-
-
 def kraj_number(url_address):
     """ Ziska cislo kraje, ktere se nachazi za 'kraj=' v url adrese.
 
@@ -35,7 +33,6 @@ def kraj_number(url_address):
 
 
 def send_request_get(url: str):
-    """Get response from the server"""
     response = requests.get(url)
     response = response.text
     return response, url
@@ -104,8 +101,24 @@ def scrap_data(soup,url):
     print("Data was downloaded properly.")
     return data_list, strany_ze_dvou_tabulek
     
-def write_data_into_file(strany, data_list, file_name):
-    """write scraped data into csv file"""
+    
+
+
+def scrap_the_web(url, file_name):
+    """_summary_
+
+    Args:
+        url (string): url adresa okrsku
+        file_name (string): nazev souboru, do ktereho se maji vysledna data ulozit(bez pripony)
+    """
+    
+    response = send_request_get(url)
+    soup = parse_response(response[0], response[1])
+    data_list, strany = scrap_data(soup[0], soup[1])
+    
+    
+    # print(scraped_data[1])
+    # print(scraped_data[0])
     # Create a new workbook and select the active worksheet
     wb = Workbook()
     ws = wb.active
@@ -121,26 +134,13 @@ def write_data_into_file(strany, data_list, file_name):
     for row in data_list:
         ws.append(row)
         
+
     # Save the workbook
     excel_file_path = f"{file_name}.csv"
     wb.save(excel_file_path)
 
-    print(f"Data has been written to {excel_file_path}")  
-
-def scrap_the_web(url):
-    """_summary_
-
-    Args:
-        url (string): url adresa okrsku
-        file_name (string): nazev souboru, do ktereho se maji vysledna data ulozit(bez pripony)
-    """
-    
-    response = send_request_get(url)
-    soup = parse_response(response[0], response[1])
-    data_list, strany = scrap_data(soup[0], soup[1])
-    
-    return strany, data_list
-    
+    print(f"Data has been written to {excel_file_path}")
+    print("The program is terminated")
 
 def main():
     if len(sys.argv) != 3:
@@ -150,11 +150,7 @@ def main():
     url = sys.argv[1]
     file_name = sys.argv[2]
 
-    strany, data_list = scrap_the_web(url)
-    
-    write_data_into_file(strany, data_list, file_name)
-    
-    print("The program is terminated")
+    scrap_the_web(url, file_name)
 
 if __name__ == '__main__':
     main()
