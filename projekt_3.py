@@ -1,10 +1,9 @@
 import requests
 from bs4 import BeautifulSoup
-from openpyxl.workbook import Workbook
+import pandas as pd
 import sys
 
 """
-
 projekt_3.py: třetí projekt do Engeto Online Python Akademie
 
 author: Karel Minarčík
@@ -14,7 +13,6 @@ email: k.minarcik@seznam.cz
 discord: Karel Minarčík | karlos9957
 
 """
-
 
 def kraj_number(url_address):
     """ 
@@ -44,9 +42,14 @@ def send_request_get(url):
     Returns:
         tuple: A tuple containing the response text and the URL.
     """
-    response = requests.get(url)
-    response = response.text
-    return response, url
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        return response.text, url
+    except requests.RequestException as e:
+        print(f"Error fetching URL {url}: {e}")
+        sys.exit(1)
+
 
 def parse_response(response, url):
     """
@@ -89,9 +92,9 @@ def get_overall_election_numbers(obec_soup):
     Returns:
         tuple: A tuple containing the number of voters, issued envelopes, and valid votes.
     """
-    volici_v_seznamu = obec_soup.select_one("td:nth-child(4)").text
-    vydane_obalky = obec_soup.select_one("td:nth-child(5)").text
-    platne_hlasy = obec_soup.select_one("td:nth-child(8)").text
+    volici_v_seznamu = obec_soup.select_one("td:nth-child(4)").text.replace('\xa0', '')
+    vydane_obalky = obec_soup.select_one("td:nth-child(5)").text.replace('\xa0', '')
+    platne_hlasy = obec_soup.select_one("td:nth-child(8)").text.replace('\xa0', '')
     return volici_v_seznamu, vydane_obalky, platne_hlasy
 
 
@@ -118,11 +121,11 @@ def get_party_numbers(obec_soup):
 
         # Data from first table
         pocet_html_1 = tabulka.find_all("td", class_="cislo", headers="t1sa2 t1sb3")
-        pocty1 = [pocet.text.strip() for pocet in pocet_html_1] if pocet_html_1 else []
+        pocty1 = [pocet.text.strip().replace('\xa0', '') for pocet in pocet_html_1] if pocet_html_1 else []
 
         # Data from second table
         pocet_html_2 = tabulka.find_all("td", class_="cislo", headers="t2sa2 t2sb3")
-        pocty2 = [pocet.text.strip() for pocet in pocet_html_2] if pocet_html_2 else []
+        pocty2 = [pocet.text.strip().replace('\xa0', '') for pocet in pocet_html_2] if pocet_html_2 else []
 
         pocty_ze_dvou_tabulek.extend(pocty1)
         pocty_ze_dvou_tabulek.extend(pocty2)
@@ -196,26 +199,18 @@ def write_data_into_file(strany, data_list, file_name):
     Returns:
         None
     """
-    # Create a new workbook and select the active worksheet
-    wb = Workbook()
-    ws = wb.active
-
     # Define the header
     header = ["Kód", "Obec", "Voliči v seznamu", "Vydané obálky", "Platné hlasy"]
     header.extend(strany)
 
-    # Write the header row to the worksheet
-    ws.append(header)
+    # Create a DataFrame from the data
+    df = pd.DataFrame(data_list, columns=header)
 
-    # Write the data to the worksheet
-    for row in data_list:
-        ws.append(row)
-        
-    # Save the workbook
-    excel_file_path = f"{file_name}.csv"
-    wb.save(excel_file_path)
+    # Save the DataFrame to a CSV file
+    csv_file_path = f"{file_name}.csv"
+    df.to_csv(csv_file_path, index=False, encoding='utf-8')
 
-    print(f"Data has been written to {excel_file_path}")  
+    print(f"Data has been written to {csv_file_path}")  
 
 
 def scrap_the_web(url):
@@ -231,42 +226,19 @@ def scrap_the_web(url):
             - data_list (list of lists): A list where each element is a list of data points 
                                          for a specific municipality.
     """
-    response = send_request_get(url)
-    soup = parse_response(response[0], response[1])
-    data_list, strany = scrap_data(soup[0], soup[1])
-    
+    response, url = send_request_get(url)
+    soup, url = parse_response(response, url)
+    data_list, strany = scrap_data(soup, url)
     return strany, data_list
 
 
-def main():
-    """
-    Main function to execute the web scraping process and write data to a file.
-
-    This function takes command line arguments for the URL to be scraped and the 
-    file name to save the data. It scrapes the data and writes it into a CSV file.
-
-    Usage:
-        python projekt_3.py <url> <nazev_souboru>
-
-    Args:
-        None
-
-    Returns:
-        None
-    """
+if __name__ == "__main__":
     if len(sys.argv) != 3:
-        print("Pouziti: python projekt_3.py <url> <nazev_souboru>")
+        print("Usage: python projekt_3.py <URL> <output_file_name>")
         sys.exit(1)
 
     url = sys.argv[1]
     file_name = sys.argv[2]
 
     strany, data_list = scrap_the_web(url)
-    
     write_data_into_file(strany, data_list, file_name)
-    
-    print("The program is terminated")
-
-
-if __name__ == '__main__':
-    main()
