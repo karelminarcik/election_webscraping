@@ -1,7 +1,8 @@
 import requests
-from bs4 import BeautifulSoup
-import pandas as pd
 import sys
+import csv
+from bs4 import BeautifulSoup
+
 
 """
 projekt_3.py: třetí projekt do Engeto Online Python Akademie
@@ -27,9 +28,7 @@ def kraj_number(url_address):
     number = url_address[-16:-14]
     if "=" in number:
         number = number.replace("=", "")
-        return number
-    else:
-        return number
+    return number
 
 
 def send_request_get(url):
@@ -199,16 +198,18 @@ def write_data_into_file(strany, data_list, file_name):
     Returns:
         None
     """
+    csv_file_path = f"{file_name}.csv"
     # Define the header
     header = ["Kód", "Obec", "Voliči v seznamu", "Vydané obálky", "Platné hlasy"]
     header.extend(strany)
 
-    # Create a DataFrame from the data
-    df = pd.DataFrame(data_list, columns=header)
+    # Write data to the csv file
+    with open(csv_file_path, mode="w", newline='', encoding='utf-8') as new_csv:
+        writer = csv.writer(new_csv)
+        writer.writerow(header)
+        writer.writerows(data_list)
 
-    # Save the DataFrame to a CSV file
-    csv_file_path = f"{file_name}.csv"
-    df.to_csv(csv_file_path, index=False, encoding='utf-8')
+    
 
     print(f"Data has been written to {csv_file_path}")  
 
